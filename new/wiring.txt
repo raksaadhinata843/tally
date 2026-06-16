@@ -1,0 +1,80 @@
+====================================================================
+               SKEMA WIRING WIRELESS TALLY LIGHT (4-CAM)
+====================================================================
+
+--------------------------------------------------------------------
+1. KONEKSI MODUL RADIO NRF24L01 (SAMA UNTUK TRANSMITTER & RECEIVER)
+--------------------------------------------------------------------
+PENTING: VCC NRF24L01 WAJIB ke 3.3V (Jangan ke 5V!). 
+Disarankan pasang Kapasitor 10uF - 100uF di kaki VCC dan GND NRF24L01.
+
+      Tampilan Kaki NRF24L01 (Bawah):
+         +-----------+
+         | GND   VCC | <- (VCC ke 3.3V)
+         | CE    CSN |
+         | SCK   MOSI|
+         | MISO  IRQ |
+         +-----------+
+
+   [PIN NRF24L01]       ------------->       [PIN ARDUINO UNO/NANO]
+   1. GND               -------------        GND
+   2. VCC (3.3V)        -------------        3.3V
+   3. CE                -------------        D9
+   4. CSN               -------------        D10
+   5. SCK               -------------        D13
+   6. MOSI              -------------        D11
+   7. MISO              -------------        D12
+   8. IRQ               -------------        (TIDAK DIGUNAKAN / KOSONG)
+
+
+--------------------------------------------------------------------
+2. WIRING UNTUK SISI TRANSMITTER / INDUK (TX)
+--------------------------------------------------------------------
+* KONEKSI KE PC  : Langsung colok kabel USB Arduino ke PC/Laptop vMix.
+                   (Set baudrate di vMix / Script Bridge ke 115200).
+* LED MODE INDIKATOR (Pin D13): 
+  [D13] ---> [Resistor 220 Ohm] ---> [Anoda LED (+)] ---> [Katoda LED (-)] ---> [GND]
+
+* TOMBOL FISIK / SAKLAR INTERKOM (Active LOW):
+  Hubungkan pin Arduino ke Tombol, lalu kaki tombol satunya ke GND.
+  
+  [Kamera]      [Tombol LIVE / PGM]     [Tombol STANDBY / PVW]
+  Kamera 1 ---> Pin A3  <-> GND         Pin D1* <-> GND
+  Kamera 2 ---> Pin A2  <-> GND         Pin D5  <-> GND
+  Kamera 3 ---> Pin A1  <-> GND         Pin D6  <-> GND
+  Kamera 4 ---> Pin A0  <-> GND         Pin D7  <-> GND
+
+  *Catatan Khusus Pin D1: Lepas kabel yang terhubung ke Pin D1 saat 
+                          proses upload program agar tidak bentrok, 
+                          setelah selesai upload baru pasang lagi.
+
+
+--------------------------------------------------------------------
+3. WIRING UNTUK SISI RECEIVER / LAMPU CAMERA (RX)
+--------------------------------------------------------------------
+* DIP SWITCH (Pengatur ID Kamera):
+  Hubungkan pin Arduino ke saklar DIP, kaki saklar satunya ke GND.
+  
+  [Pin Arduino]         [DIP Switch]
+  Pin A0         -----> DIP Switch 1 <-> GND
+  Pin A1         -----> DIP Switch 2 <-> GND
+  Pin A2         -----> DIP Switch 3 <-> GND
+
+  *Panduan Seting Saklar DIP (Kondisi Saklar ON = Terhubung ke GND):
+  - Kamera 1 : Semua Saklar OFF (atau hanya DIP 1 yang ON)
+  - Kamera 2 : Hanya DIP 2 yang ON
+  - Kamera 3 : DIP 1 ON dan DIP 2 ON
+  - Kamera 4 : Hanya DIP 3 yang ON
+
+* LED RGB INDIKATOR TALLY (Jenis Common Cathode / Negatif Gabungan):
+  Setiap warna wajib diberi Resistor 220 Ohm sebelum masuk ke LED.
+
+  [Pin Arduino]                                 [Kaki LED RGB]
+  Pin D2 (PGM)  ---> [Resistor 220 Ohm] ---> Pin MERAH  (Lampu LIVE)
+  Pin D3 (PVW)  ---> [Resistor 220 Ohm] ---> Pin HIJAU  (Lampu STANDBY)
+  Pin D4 (SAFE) ---> [Resistor 220 Ohm] ---> Pin BIRU   (No-Signal/Blink)
+  GND           --------------------------> Kaki COMMON (Negatif/-)
+
+====================================================================
+                           S E L E S A I
+====================================================================
