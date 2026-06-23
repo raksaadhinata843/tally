@@ -1,11 +1,5 @@
-#include <SPI.h>
-#include <RF24.h>
-
-#define CE_PIN 9
-#define CSN_PIN 10
-#define PIPE 0xE8E8F0F0E1ULL
-
-RF24 radio(CE_PIN, CSN_PIN);
+#include <esp_now.h>
+#include <WiFi.h>
 
 // PIN ASLI sesuai permintaan
 const uint8_t PGM_PINS[6] = {A3, A2, A1, A0, 4, 3};
